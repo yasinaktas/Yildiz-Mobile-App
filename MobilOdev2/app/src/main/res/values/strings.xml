@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Mobil Odev 2</string>
+
+    <string-array name="education">
+        <item>Undergraduate</item>
+        <item>Master</item>
+        <item>PhD</item>
+    </string-array>
+
+    <string-array name="report">
+        <item>App related misconduct</item>
+        <item>Course related misconduct</item>
+        <item>Course Misbehavior</item>
+        <item>Course Cheating</item>
+    </string-array>
+    <string-array name="reportRecipient">
+        <item>Course Instructor</item>
+        <item>Admin</item>
+    </string-array>
+</resources>
