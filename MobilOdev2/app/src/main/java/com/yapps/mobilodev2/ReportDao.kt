@@ -25,7 +25,7 @@ interface ReportDao {
     @Query("SELECT * FROM report_table WHERE courseId =:id")
     fun getReportsWithCourse(id:String):LiveData<List<Report>>
 
-    @Query("SELECT * FROM report_table WHERE instructors LIKE '%' || :id || '%' AND scope LIKE '%Scope%'")
+    @Query("SELECT * FROM report_table WHERE instructors LIKE '%' || :id || '%' AND scope LIKE '%Course%'")
     fun getReportsWithInstructorId(id:String):LiveData<List<Report>>
 
     @Query("SELECT * FROM report_table WHERE scope LIKE '%App%'")
