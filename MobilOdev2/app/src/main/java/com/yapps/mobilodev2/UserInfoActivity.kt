@@ -1,6 +1,7 @@
 package com.yapps.mobilodev2
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,6 +12,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.google.android.material.button.MaterialButton
@@ -25,6 +28,8 @@ import java.util.Date
 
 class UserInfoActivity : AppCompatActivity() {
 
+    private val REQUEST_LOCATION_PERMISSION = 1
+
     private val REQUEST_IMAGE_PICK = 1000
 
     private lateinit var photo:ImageView
@@ -36,6 +41,7 @@ class UserInfoActivity : AppCompatActivity() {
     private lateinit var social:TextView
     private lateinit var edit:MaterialButton
     private lateinit var report:MaterialButton
+    private lateinit var quizzes:MaterialButton
     private lateinit var chip_group:ChipGroup
     private lateinit var chip_date:Chip
     private lateinit var chip_completed:Chip
@@ -60,6 +66,7 @@ class UserInfoActivity : AppCompatActivity() {
         social = findViewById(R.id.social)
         edit = findViewById(R.id.edit)
         report = findViewById(R.id.report)
+        quizzes = findViewById(R.id.quizzes)
         chip_group = findViewById(R.id.chip_group)
         chip_date = findViewById(R.id.chip_date)
         chip_completed = findViewById(R.id.chip_completed)
@@ -87,7 +94,7 @@ class UserInfoActivity : AppCompatActivity() {
 
         ThisApplication.courseDao.getAllCourses().observe(this, Observer { courses ->
             if(courses != null){
-                val newCourses = courses.sortedBy { it.courseId }
+                val newCourses = courses.sortedBy { it.courseId }.filter { course -> course.students.split(",").contains(userId.toString()) }
                 this.courses = newCourses
                 val myStringArray = ArrayList<String>()
                 for(course in newCourses){
@@ -185,7 +192,6 @@ class UserInfoActivity : AppCompatActivity() {
                             customObjectDate.before(fourMonthsAgo)
                         }
                         val myStringArray = ArrayList<String>()
-                        this.courses = sortedList
                         for(course in sortedList){
                             myStringArray.add(course.courseId + " - " + course.date)
                         }
@@ -196,6 +202,19 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
         chip_group.setOnCheckedChangeListener(chipGroupListener)
+
+
+        quizzes.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_LOCATION_PERMISSION)
+            } else {
+                val intent = Intent(this,UserQuizzesActivity::class.java)
+                intent.putExtra("userId",userId)
+                startActivity(intent)
+            }
+        }
 
     }
 
@@ -220,6 +239,20 @@ class UserInfoActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
             val imageUri = data?.data
             photo.setImageURI(imageUri)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+                else {
+
+                }
+            }
         }
     }
 }

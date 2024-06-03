@@ -1,25 +1,19 @@
 package com.yapps.mobilodev2
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -27,8 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -51,6 +43,7 @@ class InstructorInfoActivity : AppCompatActivity() {
     private lateinit var call:ImageView
     private lateinit var mail:ImageView
     private lateinit var open:ImageView
+    private lateinit var quiz:MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +61,7 @@ class InstructorInfoActivity : AppCompatActivity() {
         call = findViewById(R.id.call)
         mail = findViewById(R.id.mail)
         open = findViewById(R.id.open)
+        quiz = findViewById(R.id.quiz)
 
         createNotificationChannel()
 
@@ -161,6 +155,13 @@ class InstructorInfoActivity : AppCompatActivity() {
         open.setOnClickListener{
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse("https://www.instagram.com/${social.text}")
+            startActivity(intent)
+        }
+
+        quiz.setOnClickListener {
+            ThisApplication.sharedPrefs.setRemember(false)
+            val intent = Intent(this,InstructorQuizzesActivity::class.java)
+            intent.putExtra("instructorId",userId)
             startActivity(intent)
         }
 

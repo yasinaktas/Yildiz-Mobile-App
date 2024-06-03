@@ -36,7 +36,7 @@ class CourseInfoActivity : AppCompatActivity() {
                 name.text = "Course Name: " + course.courseName
                 id.text = "Course Id: " + course.courseId
                 groups.text = "Groups: " + course.groupNumbers.toString()
-                students.text = "Students Number: " + course.students.split(",").size.toString()
+                students.text = "Students Number: " + (course.students.split(",").size-1).toString()
             }
         })
 

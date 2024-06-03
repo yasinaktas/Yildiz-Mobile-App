@@ -28,6 +28,9 @@ interface CourseDao {
     @Query("SELECT * FROM course_table WHERE courseId = :id")
     fun getCourseById(id: String): LiveData<Course>
 
+    @Query("SELECT COUNT(*) FROM course_table WHERE courseId = :id")
+    suspend fun isCourseExist(id: String): Int
+
     @Query("SELECT * FROM course_table WHERE courseId = :id")
     suspend fun getCourseByIdSuspend(id: String): Course
 

@@ -262,6 +262,17 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"/>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/quizzes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quizzes"
+                app:cornerRadius="8dp"
+                android:backgroundTint="@android:color/darker_gray"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
